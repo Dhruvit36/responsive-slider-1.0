@@ -3,6 +3,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay, EffectFade } from 'swiper/modules';
 import { useSliderContext } from '../context/SliderContext';
 import SlideRenderer from './SlideRenderer';
+import NavigationControls from './NavigationControls';
+import SliderSettings from './SliderSettings';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -14,7 +16,9 @@ import 'swiper/css/effect-fade';
 const SliderEngine = ({ 
   className = "",
   height = "100vh",
-  showSettingsButton = false
+  showSettingsButton = true,
+  showCustomNavigation = true,
+  navigationPosition = "bottom-center"
 }) => {
   const swiperRef = useRef(null);
   const [showSettings, setShowSettings] = useState(false);
@@ -107,9 +111,9 @@ const SliderEngine = ({
           disableOnInteraction: false,
         } : false}
         
-        // Navigation
-        navigation={settings.navigation.enabled && settings.navigation.arrows}
-        pagination={settings.navigation.enabled && settings.navigation.pagination ? {
+        // Navigation - disable default Swiper navigation when using custom
+        navigation={!showCustomNavigation && settings.navigation.enabled && settings.navigation.arrows}
+        pagination={!showCustomNavigation && settings.navigation.enabled && settings.navigation.pagination ? {
           clickable: true,
         } : false}
         
@@ -131,15 +135,37 @@ const SliderEngine = ({
         ))}
       </Swiper>
       
+      {/* Custom Navigation Controls */}
+      {showCustomNavigation && settings.navigation.enabled && (
+        <NavigationControls
+          swiperRef={swiperRef}
+          position={navigationPosition}
+          showArrows={settings.navigation.arrows}
+          showPagination={settings.navigation.pagination}
+          showPlayPause={true}
+        />
+      )}
+      
       {/* Settings Button */}
       {showSettingsButton && (
         <button
           onClick={() => setShowSettings(!showSettings)}
-          className="absolute top-4 right-4 z-50 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-all"
+          className="absolute top-4 right-4 z-50 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition-all backdrop-blur-sm border border-white border-opacity-20"
+          aria-label="Open slider settings"
         >
-          ⚙️
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="m12 1 1.665 5.815L21 12l-7.335 5.185L12 23l-1.665-5.815L3 12l7.335-5.185L12 1z"></path>
+          </svg>
         </button>
       )}
+
+      {/* Settings Panel */}
+      <SliderSettings
+        isOpen={showSettings}
+        onClose={() => setShowSettings(false)}
+        position="right"
+      />
     </div>
   );
 };

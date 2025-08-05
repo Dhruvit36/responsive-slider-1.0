@@ -62,6 +62,7 @@ const SlideRenderer = ({
         key={`${index}-${isActive ? 'active' : 'inactive'}`}
         slideElement={slideRef.current}
         slideIndex={index}
+        slideData={slide}
         isActive={isActive}
         onAnimationComplete={onAnimationComplete}
       />

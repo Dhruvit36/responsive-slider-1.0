@@ -1,9 +1,11 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
+import { animationPresets } from '../utils/animations';
 
 const LayerAnimations = ({ 
   slideElement, 
   slideIndex,
+  slideData,
   isActive = false,
   onAnimationComplete 
 }) => {
@@ -28,10 +30,23 @@ const LayerAnimations = ({
       // Clear any existing animations
       gsap.killTweensOf([title, subtitle, cta]);
 
-      // Set initial state (hidden)
-      if (title) gsap.set(title, { opacity: 0, y: 30 });
-      if (subtitle) gsap.set(subtitle, { opacity: 0, y: 30 });
-      if (cta) gsap.set(cta, { opacity: 0, y: 30 });
+      // Get animation configurations from slide data
+      const animations = slideData?.animations || {};
+      
+      // Default animation settings
+      const defaultAnimation = {
+        preset: 'slideUp',
+        delay: 0.3,
+        duration: 0.6,
+        easing: 'power2.out'
+      };
+
+      // Apply animations based on slide configuration or defaults
+      const elements = [
+        { element: title, config: animations.title || { ...defaultAnimation, delay: 0.3 } },
+        { element: subtitle, config: animations.subtitle || { ...defaultAnimation, delay: 0.5 } },
+        { element: cta, config: animations.cta || { ...defaultAnimation, delay: 0.7, preset: 'scaleIn' } }
+      ];
 
       // Create timeline
       const tl = gsap.timeline({
@@ -40,33 +55,21 @@ const LayerAnimations = ({
         }
       });
 
-      // Animate elements with stagger
-      if (title) {
-        tl.to(title, { 
-          opacity: 1, 
-          y: 0, 
-          duration: 0.6,
-          ease: "power2.out"
-        }, 0.3);
-      }
-      
-      if (subtitle) {
-        tl.to(subtitle, { 
-          opacity: 1, 
-          y: 0, 
-          duration: 0.6,
-          ease: "power2.out"
-        }, 0.5);
-      }
-      
-      if (cta) {
-        tl.to(cta, { 
-          opacity: 1, 
-          y: 0, 
-          duration: 0.6,
-          ease: "power2.out"
-        }, 0.7);
-      }
+      elements.forEach(({ element, config }) => {
+        if (!element) return;
+
+        const preset = animationPresets[config.preset] || animationPresets.slideUp;
+        
+        // Set initial state
+        gsap.set(element, preset.in);
+
+        // Add animation to timeline
+        tl.to(element, {
+          ...preset.out,
+          duration: config.duration || preset.duration,
+          ease: config.easing || preset.ease,
+        }, config.delay || 0);
+      });
     };
 
     // Small delay to ensure slide transition is complete
@@ -78,7 +81,7 @@ const LayerAnimations = ({
         animationTimeoutRef.current = null;
       }
     };
-  }, [isActive, slideElement, slideIndex]);
+  }, [isActive, slideElement, slideIndex, slideData]);
 
   return null;
 };

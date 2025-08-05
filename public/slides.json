@@ -1,7 +1,33 @@
 {
-  "autoplay": {
-    "enabled": true,
-    "delay": 4000
+  "settings": {
+    "autoplay": {
+      "enabled": true,
+      "delay": 4000
+    },
+    "navigation": {
+      "enabled": true,
+      "arrows": true,
+      "pagination": true
+    },
+    "loop": true,
+    "speed": 600,
+    "spaceBetween": 0,
+    "slidesPerView": 1
+  },
+  "breakpoints": {
+    "mobile": {
+      "maxWidth": 768,
+      "settings": {
+        "autoplay": { "delay": 3000 },
+        "speed": 400
+      }
+    },
+    "tablet": {
+      "maxWidth": 1024,
+      "settings": {
+        "autoplay": { "delay": 3500 }
+      }
+    }
   },
   "slides": [
     {
@@ -10,7 +36,30 @@
       "buttonText": "Get Started",
       "buttonLink": "#",
       "image": "/images/Slide_1.jpg",
-      "animation": "slideIn"
+      "overlay": {
+        "gradient": "linear-gradient(45deg, rgba(0,0,0,0.6), rgba(0,0,0,0.2))"
+      },
+      "animations": {
+        "title": {
+          "preset": "slideUp",
+          "delay": 0.3,
+          "duration": 0.8,
+          "easing": "power2.out"
+        },
+        "subtitle": {
+          "preset": "slideUp", 
+          "delay": 0.5,
+          "duration": 0.8,
+          "easing": "power2.out"
+        },
+        "cta": {
+          "preset": "scaleIn",
+          "delay": 0.7,
+          "duration": 0.6,
+          "easing": "back.out(1.7)"
+        }
+      },
+      "duration": 5000
     },
     {
       "title": "Supercharge Your Productivity",
@@ -18,7 +67,30 @@
       "buttonText": "Learn More",
       "buttonLink": "#",
       "image": "/images/Slide_2.jpg",
-      "animation": "slideIn"
+      "overlay": {
+        "gradient": "linear-gradient(135deg, rgba(0,50,100,0.4), rgba(0,0,0,0.6))"
+      },
+      "animations": {
+        "title": {
+          "preset": "fadeIn",
+          "delay": 0.2,
+          "duration": 1.0,
+          "easing": "power1.out"
+        },
+        "subtitle": {
+          "preset": "slideInLeft",
+          "delay": 0.6,
+          "duration": 0.8,
+          "easing": "power2.out"
+        },
+        "cta": {
+          "preset": "bounceIn",
+          "delay": 1.0,
+          "duration": 0.8,
+          "easing": "back.out(1.7)"
+        }
+      },
+      "duration": 4500
     },
     {
       "title": "Tailwind + Blazor = ❤️",
@@ -26,7 +98,30 @@
       "buttonText": "Explore Now",
       "buttonLink": "#",
       "image": "/images/Slide_3.jpg",
-      "animation": "slideIn"
+      "overlay": {
+        "gradient": "linear-gradient(to right, rgba(100,0,100,0.3), rgba(0,0,0,0.5))"
+      },
+      "animations": {
+        "title": {
+          "preset": "rotateIn",
+          "delay": 0.1,
+          "duration": 1.2,
+          "easing": "power2.out"
+        },
+        "subtitle": {
+          "preset": "slideIn",
+          "delay": 0.4,
+          "duration": 0.7,
+          "easing": "power2.out"
+        },
+        "cta": {
+          "preset": "flipIn",
+          "delay": 0.8,
+          "duration": 0.9,
+          "easing": "power2.out"
+        }
+      },
+      "duration": 6000
     }
   ]
 }
