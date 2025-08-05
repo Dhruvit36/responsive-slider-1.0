@@ -1,0 +1,32 @@
+{
+  "autoplay": {
+    "enabled": true,
+    "delay": 4000
+  },
+  "slides": [
+    {
+      "title": "Welcome to Blazor Boost",
+      "subtitle": "Build modern web apps with C# and WebAssembly",
+      "buttonText": "Get Started",
+      "buttonLink": "#",
+      "image": "/images/Slide_1.jpg",
+      "animation": "slideIn"
+    },
+    {
+      "title": "Supercharge Your Productivity",
+      "subtitle": "Rapid development with full control over UI",
+      "buttonText": "Learn More",
+      "buttonLink": "#",
+      "image": "/images/Slide_2.jpg",
+      "animation": "slideIn"
+    },
+    {
+      "title": "Tailwind + Blazor = ❤️",
+      "subtitle": "Style your components with ease",
+      "buttonText": "Explore Now",
+      "buttonLink": "#",
+      "image": "/images/Slide_3.jpg",
+      "animation": "slideIn"
+    }
+  ]
+}
