@@ -99,6 +99,17 @@ export const SliderProvider = ({ children }) => {
     }));
   }, []);
 
+  // Update individual slide
+  const updateSlide = useCallback((slideIndex, updatedSlide) => {
+    setSlides(prev => {
+      const newSlides = [...prev];
+      if (slideIndex >= 0 && slideIndex < newSlides.length) {
+        newSlides[slideIndex] = updatedSlide;
+      }
+      return newSlides;
+    });
+  }, []);
+
   // Event system functions
   const addEventListener = useCallback((event, callback) => {
     setEventListeners(prev => {
@@ -181,13 +192,14 @@ export const SliderProvider = ({ children }) => {
     settings,
     setCurrentSlide: setCurrentSlideWithEvents,
     updateSettings,
+    updateSlide,
     setSlides,
     setIsLoading,
     // Event system
     addEventListener,
     removeEventListener,
     dispatchEvent
-  }), [slides, currentSlide, isLoading, settings, updateSettings, setCurrentSlideWithEvents, addEventListener, removeEventListener, dispatchEvent]);
+  }), [slides, currentSlide, isLoading, settings, updateSettings, updateSlide, setCurrentSlideWithEvents, addEventListener, removeEventListener, dispatchEvent]);
 
   return (
     <SliderContext.Provider value={value}>

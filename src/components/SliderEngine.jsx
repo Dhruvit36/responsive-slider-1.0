@@ -5,6 +5,7 @@ import { useSliderContext } from '../context/SliderContext';
 import SlideRenderer from './SlideRenderer';
 import NavigationControls from './NavigationControls';
 import SliderSettings from './SliderSettings';
+import AnimationBuilder from './AnimationBuilder';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -22,6 +23,7 @@ const SliderEngine = ({
 }) => {
   const swiperRef = useRef(null);
   const [showSettings, setShowSettings] = useState(false);
+  const [showAnimationBuilder, setShowAnimationBuilder] = useState(false);
   const [slideElements, setSlideElements] = useState({});
   
   const { 
@@ -30,8 +32,20 @@ const SliderEngine = ({
     isLoading, 
     settings, 
     setCurrentSlide,
-    updateSettings
+    updateSettings,
+    updateSlide
   } = useSliderContext();
+
+  // Handle animation save
+  const handleAnimationSave = useCallback((animations) => {
+    if (slides[currentSlide]) {
+      const updatedSlide = {
+        ...slides[currentSlide],
+        animations
+      };
+      updateSlide(currentSlide, updatedSlide);
+    }
+  }, [slides, currentSlide, updateSlide]);
 
   // Handle slide change
   const handleSlideChange = useCallback((swiper) => {
@@ -148,16 +162,27 @@ const SliderEngine = ({
       
       {/* Settings Button */}
       {showSettingsButton && (
-        <button
-          onClick={() => setShowSettings(!showSettings)}
-          className="absolute top-4 right-4 z-50 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition-all backdrop-blur-sm border border-white border-opacity-20"
-          aria-label="Open slider settings"
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <circle cx="12" cy="12" r="3"></circle>
-            <path d="m12 1 1.665 5.815L21 12l-7.335 5.185L12 23l-1.665-5.815L3 12l7.335-5.185L12 1z"></path>
-          </svg>
-        </button>
+        <div className="absolute top-4 right-4 z-50 flex gap-2">
+          <button
+            onClick={() => setShowAnimationBuilder(!showAnimationBuilder)}
+            className="bg-purple-600 bg-opacity-90 text-white p-3 rounded-full hover:bg-purple-700 transition-all backdrop-blur-sm border border-white border-opacity-20"
+            aria-label="Open animation builder"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          </button>
+          <button
+            onClick={() => setShowSettings(!showSettings)}
+            className="bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition-all backdrop-blur-sm border border-white border-opacity-20"
+            aria-label="Open slider settings"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="m12 1 1.665 5.815L21 12l-7.335 5.185L12 23l-1.665-5.815L3 12l7.335-5.185L12 1z"></path>
+            </svg>
+          </button>
+        </div>
       )}
 
       {/* Settings Panel */}
@@ -165,6 +190,14 @@ const SliderEngine = ({
         isOpen={showSettings}
         onClose={() => setShowSettings(false)}
         position="right"
+      />
+
+      {/* Animation Builder */}
+      <AnimationBuilder
+        isOpen={showAnimationBuilder}
+        onClose={() => setShowAnimationBuilder(false)}
+        slideData={slides[currentSlide]}
+        onSave={handleAnimationSave}
       />
     </div>
   );

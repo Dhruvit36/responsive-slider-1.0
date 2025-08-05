@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import { animationPresets } from '../utils/animations';
+import { animationManager } from '../utils/advancedAnimations';
 
 const LayerAnimations = ({ 
   slideElement, 
@@ -28,48 +28,53 @@ const LayerAnimations = ({
       const cta = slideElement.querySelector('.cta');
 
       // Clear any existing animations
-      gsap.killTweensOf([title, subtitle, cta]);
+      animationManager.clearAnimations(title);
+      animationManager.clearAnimations(subtitle);
+      animationManager.clearAnimations(cta);
 
       // Get animation configurations from slide data
       const animations = slideData?.animations || {};
       
       // Default animation settings
-      const defaultAnimation = {
-        preset: 'slideUp',
-        delay: 0.3,
-        duration: 0.6,
-        easing: 'power2.out'
-      };
+      const defaultTitleAnim = animations.title || { preset: 'slideUp', delay: 0.3, duration: 0.8 };
+      const defaultSubtitleAnim = animations.subtitle || { preset: 'slideUp', delay: 0.5, duration: 0.8 };
+      const defaultCtaAnim = animations.cta || { preset: 'zoomIn', delay: 0.7, duration: 0.8 };
 
-      // Apply animations based on slide configuration or defaults
-      const elements = [
-        { element: title, config: animations.title || { ...defaultAnimation, delay: 0.3 } },
-        { element: subtitle, config: animations.subtitle || { ...defaultAnimation, delay: 0.5 } },
-        { element: cta, config: animations.cta || { ...defaultAnimation, delay: 0.7, preset: 'scaleIn' } }
-      ];
+      // Execute animations with the advanced system
+      if (title) {
+        animationManager.executePreset(defaultTitleAnim.preset, title, {
+          delay: defaultTitleAnim.delay,
+          duration: defaultTitleAnim.duration,
+          easing: defaultTitleAnim.easing
+        });
+      }
+      
+      if (subtitle) {
+        animationManager.executePreset(defaultSubtitleAnim.preset, subtitle, {
+          delay: defaultSubtitleAnim.delay,
+          duration: defaultSubtitleAnim.duration,
+          easing: defaultSubtitleAnim.easing
+        });
+      }
+      
+      if (cta) {
+        animationManager.executePreset(defaultCtaAnim.preset, cta, {
+          delay: defaultCtaAnim.delay,
+          duration: defaultCtaAnim.duration,
+          easing: defaultCtaAnim.easing
+        });
+      }
 
-      // Create timeline
-      const tl = gsap.timeline({
-        onComplete: () => {
-          if (onAnimationComplete) onAnimationComplete();
-        }
-      });
-
-      elements.forEach(({ element, config }) => {
-        if (!element) return;
-
-        const preset = animationPresets[config.preset] || animationPresets.slideUp;
-        
-        // Set initial state
-        gsap.set(element, preset.in);
-
-        // Add animation to timeline
-        tl.to(element, {
-          ...preset.out,
-          duration: config.duration || preset.duration,
-          ease: config.easing || preset.ease,
-        }, config.delay || 0);
-      });
+      // Call completion callback after longest animation
+      const maxDelay = Math.max(
+        defaultTitleAnim.delay + defaultTitleAnim.duration,
+        defaultSubtitleAnim.delay + defaultSubtitleAnim.duration,
+        defaultCtaAnim.delay + defaultCtaAnim.duration
+      );
+      
+      if (onAnimationComplete) {
+        setTimeout(onAnimationComplete, (maxDelay * 1000) + 100);
+      }
     };
 
     // Small delay to ensure slide transition is complete
