@@ -32,6 +32,25 @@ const SlideRenderer = ({
     });
   };
 
+  // Handle layer interactions
+  const handleLayerInteraction = (interactionType, layerIndex, layer, event) => {
+    console.log(`Layer interaction: ${interactionType} on layer ${layerIndex}`, layer);
+    
+    // Basic interaction feedback - we'll expand this in later steps
+    switch (interactionType) {
+      case 'click':
+        // Could trigger other layer animations, slide navigation, etc.
+        console.log('Layer clicked!');
+        break;
+      case 'hover':
+        console.log('Layer hovered!');
+        break;
+      case 'unhover':
+        console.log('Layer unhovered!');
+        break;
+    }
+  };
+
   // Notify parent when slide is ready (only once)
   useEffect(() => {
     if (slideRef.current && onSlideReady && !hasNotifiedReady && !shouldWaitForVideo) {
@@ -113,6 +132,7 @@ const SlideRenderer = ({
           layerIndex={layerIndex}
           slideIndex={index}
           onElementReady={handleLayerElementReady}
+          onLayerInteraction={handleLayerInteraction}
         />
       ))}
 

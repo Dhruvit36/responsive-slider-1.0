@@ -1,12 +1,22 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 
 const ContentLayer = ({ 
   layer, 
   layerIndex,
   slideIndex,
-  onElementReady
+  onElementReady,
+  onLayerInteraction
 }) => {
   const layerRef = useRef(null);
+  const [layerState, setLayerState] = useState('idle'); // idle, hover, active, disabled
+
+  // Check if layer is interactive
+  const isInteractive = layer.interactive === true || (
+    layer.onClick || 
+    layer.onHover || 
+    layer.interactions ||
+    layer.type === 'button'
+  );
 
   // Notify parent when layer element is ready
   useEffect(() => {
@@ -14,6 +24,39 @@ const ContentLayer = ({
       onElementReady(layerRef.current, layerIndex);
     }
   }, []); // Empty dependency array to run only once
+
+  // Handle layer interactions
+  const handleLayerClick = (event) => {
+    if (!isInteractive) return;
+    
+    event.stopPropagation(); // Prevent slide navigation
+    setLayerState('active');
+    
+    if (layer.onClick) {
+      layer.onClick(layerIndex, layer, event);
+    }
+    
+    if (onLayerInteraction) {
+      onLayerInteraction('click', layerIndex, layer, event);
+    }
+    
+    // Reset state after animation
+    setTimeout(() => setLayerState('idle'), 200);
+  };
+
+  const handleLayerHover = (isEntering) => {
+    if (!isInteractive) return;
+    
+    setLayerState(isEntering ? 'hover' : 'idle');
+    
+    if (layer.onHover && isEntering) {
+      layer.onHover(layerIndex, layer);
+    }
+    
+    if (onLayerInteraction) {
+      onLayerInteraction(isEntering ? 'hover' : 'unhover', layerIndex, layer);
+    }
+  };
 
   // Get position classes based on layer positioning
   const getPositionClasses = () => {
@@ -84,13 +127,35 @@ const ContentLayer = ({
           </div>
         );
 
+      case 'button':
+        return (
+          <div className="button-layer">
+            <button 
+              className={`interactive-button px-6 py-3 rounded-lg font-semibold transition-all duration-200 ${
+                layerState === 'hover' ? 'transform scale-105' : ''
+              } ${
+                layerState === 'active' ? 'transform scale-95' : ''
+              }`}
+              style={{
+                backgroundColor: layer.buttonColor || '#3B82F6',
+                color: layer.textColor || 'white',
+                ...layer.buttonStyle
+              }}
+            >
+              {layer.content || layer.buttonText || 'Click Me'}
+            </button>
+          </div>
+        );
+
       case 'image':
         return (
           <div className="image-layer">
             <img 
               src={layer.src} 
               alt={layer.alt || 'Layer image'}
-              className="max-w-full h-auto"
+              className={`max-w-full h-auto transition-transform duration-200 ${
+                layerState === 'hover' ? 'transform scale-105' : ''
+              }`}
               style={layer.imageStyles}
             />
             {layer.caption && (
@@ -121,7 +186,9 @@ const ContentLayer = ({
   return (
     <div 
       ref={layerRef}
-      className={`content-layer ${getPositionClasses()}`}
+      className={`content-layer ${getPositionClasses()} ${
+        isInteractive ? 'interactive cursor-pointer' : ''
+      } ${layerState}`}
       style={{
         zIndex: layer.zIndex || layerIndex + 10,
         opacity: 0, // Start hidden for animations
@@ -130,6 +197,10 @@ const ContentLayer = ({
       data-layer-type={layer.type}
       data-layer-index={layerIndex}
       data-layer-position={layer.position}
+      data-interactive={isInteractive}
+      onClick={handleLayerClick}
+      onMouseEnter={() => handleLayerHover(true)}
+      onMouseLeave={() => handleLayerHover(false)}
     >
       {renderLayerContent()}
     </div>

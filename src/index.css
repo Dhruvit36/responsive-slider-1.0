@@ -15,6 +15,33 @@ body {
   pointer-events: auto; /* Enable for interactive layers */
 }
 
+/* Phase 3.3 Interactive Layer States */
+.content-layer.interactive:hover {
+  z-index: 9999; /* Bring to front on hover */
+}
+
+.content-layer.hover {
+  filter: brightness(1.1);
+}
+
+.content-layer.active {
+  filter: brightness(1.2);
+}
+
+.interactive-button {
+  cursor: pointer;
+  user-select: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.interactive-button:hover {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+.interactive-button:active {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
 .text-layer {
   text-rendering: optimizeLegibility;
 }

@@ -449,6 +449,65 @@
         }
       },
       "duration": 8000
+    },
+    {
+      "title": "Interactive Layers",
+      "subtitle": "Click and hover to interact",
+      "image": "/images/Slide_2.jpg",
+      "overlay": {
+        "gradient": "linear-gradient(135deg, rgba(0,100,150,0.8), rgba(0,0,0,0.5))"
+      },
+      "layers": [
+        {
+          "type": "button",
+          "content": "Click Me!",
+          "position": "center",
+          "style": {
+            "marginTop": "100px"
+          },
+          "buttonColor": "#FF6B6B",
+          "interactive": true,
+          "animation": {
+            "preset": "bounceIn",
+            "delay": 0.5,
+            "duration": 0.8,
+            "easing": "bounce.out"
+          }
+        },
+        {
+          "type": "text",
+          "content": "Hover over me! 🎯",
+          "position": "top-right",
+          "style": {
+            "fontSize": "24px",
+            "color": "#4ECDC4",
+            "padding": "20px",
+            "transition": "all 0.3s ease"
+          },
+          "interactive": true,
+          "animation": {
+            "preset": "slideInRight",
+            "delay": 0.8,
+            "duration": 0.6,
+            "easing": "power2.out"
+          }
+        }
+      ],
+      "animations": {
+        "title": {
+          "preset": "slideUp",
+          "delay": 0.2,
+          "duration": 0.8,
+          "easing": "power2.out"
+        },
+        "subtitle": {
+          "preset": "slideUp",
+          "delay": 0.3,
+          "duration": 0.8,
+          "easing": "power2.out"
+        }
+      },
+      "duration": 6000
     }
   ]
 }
