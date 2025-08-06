@@ -17,7 +17,14 @@ export const SliderProvider = ({ children }) => {
     navigation: {
       enabled: true,
       arrows: true,
-      pagination: true
+      pagination: true,
+      playPause: true,
+      position: 'bottom-center',
+      theme: 'glass',
+      size: 'medium',
+      autoHide: true,
+      hideDelay: 3000,
+      animationStyle: 'fade'
     },
     touch: {
       minDistance: 50,

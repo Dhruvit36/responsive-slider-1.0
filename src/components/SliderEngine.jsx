@@ -236,14 +236,19 @@ const SliderEngine = ({
         ))}
       </Swiper>
       
-      {/* Custom Navigation Controls */}
+      {/* Enhanced Navigation Controls */}
       {showCustomNavigation && settings.navigation.enabled && (
         <NavigationControls
           swiperRef={swiperRef}
-          position={navigationPosition}
+          position={settings.navigation.position || navigationPosition}
           showArrows={settings.navigation.arrows}
           showPagination={settings.navigation.pagination}
-          showPlayPause={true}
+          showPlayPause={settings.navigation.playPause}
+          autoHide={settings.navigation.autoHide}
+          hideDelay={settings.navigation.hideDelay}
+          theme={settings.navigation.theme}
+          size={settings.navigation.size}
+          animationStyle={settings.navigation.animationStyle}
         />
       )}
       

@@ -7,7 +7,14 @@
     "navigation": {
       "enabled": true,
       "arrows": true,
-      "pagination": true
+      "pagination": true,
+      "playPause": true,
+      "position": "bottom-center",
+      "theme": "glass",
+      "size": "medium",
+      "autoHide": true,
+      "hideDelay": 4000,
+      "animationStyle": "fade"
     },
     "loop": true,
     "speed": 600,

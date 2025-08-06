@@ -153,6 +153,109 @@ const SliderSettings = ({
                 />
                 <span>Show Pagination</span>
               </label>
+
+              <label className="flex items-center space-x-3 ml-6">
+                <input
+                  type="checkbox"
+                  checked={localSettings.navigation?.playPause}
+                  onChange={(e) => updateLocalSetting('navigation.playPause', e.target.checked)}
+                  disabled={!localSettings.navigation?.enabled}
+                  className="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500 disabled:opacity-50"
+                />
+                <span>Show Play/Pause</span>
+              </label>
+
+              <label className="flex items-center space-x-3 ml-6">
+                <input
+                  type="checkbox"
+                  checked={localSettings.navigation?.autoHide}
+                  onChange={(e) => updateLocalSetting('navigation.autoHide', e.target.checked)}
+                  disabled={!localSettings.navigation?.enabled}
+                  className="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500 disabled:opacity-50"
+                />
+                <span>Auto-Hide Controls</span>
+              </label>
+
+              {localSettings.navigation?.autoHide && (
+                <div className="ml-6">
+                  <label className="block text-sm text-gray-300 mb-1">
+                    Hide Delay: {((localSettings.navigation?.hideDelay || 3000) / 1000).toFixed(1)}s
+                  </label>
+                  <input
+                    type="range"
+                    min="1000"
+                    max="8000"
+                    step="500"
+                    value={localSettings.navigation?.hideDelay || 3000}
+                    onChange={(e) => updateLocalSetting('navigation.hideDelay', parseInt(e.target.value))}
+                    disabled={!localSettings.navigation?.enabled}
+                    className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer disabled:opacity-50"
+                  />
+                </div>
+              )}
+
+              <div className="ml-6">
+                <label className="block text-sm text-gray-300 mb-1">Position</label>
+                <select
+                  value={localSettings.navigation?.position || 'bottom-center'}
+                  onChange={(e) => updateLocalSetting('navigation.position', e.target.value)}
+                  disabled={!localSettings.navigation?.enabled}
+                  className="w-full bg-gray-700 border-gray-600 text-white text-sm rounded-lg p-2 disabled:opacity-50"
+                >
+                  <option value="bottom-center">Bottom Center</option>
+                  <option value="bottom-left">Bottom Left</option>
+                  <option value="bottom-right">Bottom Right</option>
+                  <option value="top-center">Top Center</option>
+                  <option value="top-left">Top Left</option>
+                  <option value="top-right">Top Right</option>
+                  <option value="center-left">Center Left</option>
+                  <option value="center-right">Center Right</option>
+                  <option value="floating">Floating</option>
+                </select>
+              </div>
+
+              <div className="ml-6">
+                <label className="block text-sm text-gray-300 mb-1">Theme</label>
+                <select
+                  value={localSettings.navigation?.theme || 'glass'}
+                  onChange={(e) => updateLocalSetting('navigation.theme', e.target.value)}
+                  disabled={!localSettings.navigation?.enabled}
+                  className="w-full bg-gray-700 border-gray-600 text-white text-sm rounded-lg p-2 disabled:opacity-50"
+                >
+                  <option value="glass">Glass</option>
+                  <option value="solid">Solid</option>
+                  <option value="minimal">Minimal</option>
+                </select>
+              </div>
+
+              <div className="ml-6">
+                <label className="block text-sm text-gray-300 mb-1">Size</label>
+                <select
+                  value={localSettings.navigation?.size || 'medium'}
+                  onChange={(e) => updateLocalSetting('navigation.size', e.target.value)}
+                  disabled={!localSettings.navigation?.enabled}
+                  className="w-full bg-gray-700 border-gray-600 text-white text-sm rounded-lg p-2 disabled:opacity-50"
+                >
+                  <option value="small">Small</option>
+                  <option value="medium">Medium</option>
+                  <option value="large">Large</option>
+                </select>
+              </div>
+
+              <div className="ml-6">
+                <label className="block text-sm text-gray-300 mb-1">Animation</label>
+                <select
+                  value={localSettings.navigation?.animationStyle || 'fade'}
+                  onChange={(e) => updateLocalSetting('navigation.animationStyle', e.target.value)}
+                  disabled={!localSettings.navigation?.enabled}
+                  className="w-full bg-gray-700 border-gray-600 text-white text-sm rounded-lg p-2 disabled:opacity-50"
+                >
+                  <option value="fade">Fade</option>
+                  <option value="slide">Slide</option>
+                  <option value="scale">Scale</option>
+                  <option value="bounce">Bounce</option>
+                </select>
+              </div>
             </div>
           </div>
 
