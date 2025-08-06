@@ -34,19 +34,14 @@ const SlideRenderer = ({
 
   // Handle layer interactions
   const handleLayerInteraction = (interactionType, layerIndex, layer, event) => {
-    console.log(`Layer interaction: ${interactionType} on layer ${layerIndex}`, layer);
-    
     // Basic interaction feedback - we'll expand this in later steps
     switch (interactionType) {
       case 'click':
         // Could trigger other layer animations, slide navigation, etc.
-        console.log('Layer clicked!');
         break;
       case 'hover':
-        console.log('Layer hovered!');
         break;
       case 'unhover':
-        console.log('Layer unhovered!');
         break;
     }
   };

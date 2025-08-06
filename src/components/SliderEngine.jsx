@@ -3,6 +3,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay, EffectFade } from 'swiper/modules';
 import { useSliderContext } from '../context/SliderContext';
 import useKeyboardNavigation from '../hooks/useKeyboardNavigation';
+import useTouchGestures from '../hooks/useTouchGestures';
+import { useTouchGestureFeedback } from '../components/TouchGestureFeedback';
 import SlideRenderer from './SlideRenderer';
 import NavigationControls from './NavigationControls';
 import SliderSettings from './SliderSettings';
@@ -24,9 +26,13 @@ const SliderEngine = ({
   navigationPosition = "bottom-center"
 }) => {
   const swiperRef = useRef(null);
+  const containerRef = useRef(null);
   const [showSettings, setShowSettings] = useState(false);
   const [showAnimationBuilder, setShowAnimationBuilder] = useState(false);
   const [slideElements, setSlideElements] = useState({});
+  
+  // Initialize touch gesture feedback
+  const { FeedbackComponent, DragIndicator } = useTouchGestureFeedback();
   
   const { 
     slides, 
@@ -126,6 +132,19 @@ const SliderEngine = ({
     enabled: !showSettings && !showAnimationBuilder // Disable when modals are open
   });
 
+  // Enhanced touch gestures with visual feedback
+  const touchGestures = useTouchGestures({
+    element: containerRef.current,
+    onSwipeLeft: handleNext,
+    onSwipeRight: handlePrev,
+    enabled: !showSettings && !showAnimationBuilder, // Disable when modals are open
+    sensitivity: {
+      minDistance: settings.touch?.minDistance || 50,
+      maxTime: settings.touch?.maxTime || 300,
+      threshold: settings.touch?.threshold || 30
+    }
+  });
+
   // Keyboard help visibility
   const keyboardHelp = useKeyboardHelp({ autoHideDelay: 4000 });
 
@@ -171,7 +190,7 @@ const SliderEngine = ({
   }
 
   return (
-    <div className={`relative ${className}`} style={{ height }}>
+    <div className={`relative ${className}`} style={{ height }} ref={containerRef}>
       <Swiper
         ref={swiperRef}
         modules={[Navigation, Pagination, Autoplay, EffectFade]}
@@ -181,6 +200,11 @@ const SliderEngine = ({
         speed={settings.speed}
         spaceBetween={settings.spaceBetween}
         slidesPerView={settings.slidesPerView}
+        
+        // Touch settings for enhanced mobile experience
+        touchRatio={1}
+        touchAngle={45}
+        grabCursor={true}
         
         // Autoplay
         autoplay={settings.autoplay.enabled ? {
@@ -279,6 +303,22 @@ const SliderEngine = ({
         shortcuts={keyboardNavigation.shortcuts}
         isVisible={keyboardHelp.isVisible}
         onDismiss={keyboardHelp.hideHelp}
+      />
+
+      {/* Touch Gesture Feedback */}
+      <FeedbackComponent
+        isActive={touchGestures.gestureState.isActive}
+        direction={touchGestures.gestureState.direction}
+        progress={touchGestures.gestureState.progress}
+        position="center"
+      />
+
+      {/* Touch Drag Progress Indicator */}
+      <DragIndicator
+        isActive={touchGestures.gestureState.isActive}
+        direction={touchGestures.gestureState.direction}
+        progress={touchGestures.gestureState.progress}
+        position="bottom"
       />
     </div>
   );

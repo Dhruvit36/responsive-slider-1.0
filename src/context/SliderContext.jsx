@@ -19,6 +19,11 @@ export const SliderProvider = ({ children }) => {
       arrows: true,
       pagination: true
     },
+    touch: {
+      minDistance: 50,
+      maxTime: 300,
+      threshold: 30
+    },
     loop: true,
     speed: 600,
     spaceBetween: 0,

@@ -29,6 +29,10 @@ const KeyboardShortcuts = ({ shortcuts, isVisible, onDismiss }) => {
           <span className="bg-gray-700 px-2 py-1 rounded text-xs">Space</span>
         </div>
         <div className="flex justify-between">
+          <span className="text-gray-300">Touch swipe:</span>
+          <span className="bg-gray-700 px-2 py-1 rounded text-xs">👈 👉</span>
+        </div>
+        <div className="flex justify-between">
           <span className="text-gray-300">Close menus:</span>
           <span className="bg-gray-700 px-2 py-1 rounded text-xs">Esc</span>
         </div>

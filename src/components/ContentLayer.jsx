@@ -23,7 +23,7 @@ const ContentLayer = ({
     if (layerRef.current && onElementReady) {
       onElementReady(layerRef.current, layerIndex);
     }
-  }, []); // Empty dependency array to run only once
+  }, [layerIndex]); // Only depend on layerIndex, not the callback function
 
   // Handle layer interactions
   const handleLayerClick = (event) => {

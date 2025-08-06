@@ -34,6 +34,11 @@ const SliderSettings = ({
         arrows: true,
         pagination: true
       },
+      touch: {
+        minDistance: 50,
+        maxTime: 300,
+        threshold: 30
+      },
       loop: true,
       speed: 600,
       spaceBetween: 0,
@@ -148,6 +153,66 @@ const SliderSettings = ({
                 />
                 <span>Show Pagination</span>
               </label>
+            </div>
+          </div>
+
+          {/* Touch Gestures Section */}
+          <div className="mb-6 pt-6 border-t border-gray-700">
+            <h3 className="text-lg font-semibold mb-3">Touch & Gestures</h3>
+            <div className="space-y-3">
+              <div>
+                <label className="block text-sm text-gray-300 mb-1">Swipe Distance (px)</label>
+                <input
+                  type="range"
+                  min="20"
+                  max="100"
+                  step="10"
+                  value={localSettings.touch?.minDistance || 50}
+                  onChange={(e) => updateLocalSetting('touch.minDistance', parseInt(e.target.value))}
+                  className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider-thumb"
+                />
+                <div className="flex justify-between text-xs text-gray-500 mt-1">
+                  <span>Sensitive (20px)</span>
+                  <span>{localSettings.touch?.minDistance || 50}px</span>
+                  <span>Less Sensitive (100px)</span>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm text-gray-300 mb-1">Swipe Speed (ms)</label>
+                <input
+                  type="range"
+                  min="200"
+                  max="500"
+                  step="50"
+                  value={localSettings.touch?.maxTime || 300}
+                  onChange={(e) => updateLocalSetting('touch.maxTime', parseInt(e.target.value))}
+                  className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider-thumb"
+                />
+                <div className="flex justify-between text-xs text-gray-500 mt-1">
+                  <span>Fast (200ms)</span>
+                  <span>{localSettings.touch?.maxTime || 300}ms</span>
+                  <span>Slow (500ms)</span>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm text-gray-300 mb-1">Touch Sensitivity</label>
+                <input
+                  type="range"
+                  min="10"
+                  max="50"
+                  step="5"
+                  value={localSettings.touch?.threshold || 30}
+                  onChange={(e) => updateLocalSetting('touch.threshold', parseInt(e.target.value))}
+                  className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider-thumb"
+                />
+                <div className="flex justify-between text-xs text-gray-500 mt-1">
+                  <span>High (10)</span>
+                  <span>{localSettings.touch?.threshold || 30}</span>
+                  <span>Low (50)</span>
+                </div>
+              </div>
             </div>
           </div>
 
