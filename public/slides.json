@@ -200,6 +200,61 @@
         }
       },
       "duration": 4500
+    },
+    {
+      "title": "Multi-Layer Content",
+      "subtitle": "Simple layered elements test",
+      "image": "/images/Slide_1.jpg",
+      "overlay": {
+        "gradient": "linear-gradient(135deg, rgba(20,20,80,0.7), rgba(0,0,0,0.3))"
+      },
+      "layers": [
+        {
+          "type": "text",
+          "content": "Phase 3.2",
+          "position": "top-right",
+          "style": {
+            "fontSize": "24px",
+            "fontWeight": "bold",
+            "color": "#FFD700",
+            "padding": "20px"
+          },
+          "animation": {
+            "preset": "slideInRight",
+            "delay": 0.3,
+            "duration": 0.8
+          }
+        },
+        {
+          "type": "text",
+          "content": "🚀",
+          "position": "bottom-left",
+          "style": {
+            "fontSize": "48px",
+            "margin": "30px"
+          },
+          "animation": {
+            "preset": "bounceIn",
+            "delay": 0.6,
+            "duration": 0.8
+          }
+        }
+      ],
+      "animations": {
+        "title": {
+          "preset": "slideUp",
+          "delay": 0.3,
+          "duration": 0.8,
+          "easing": "power2.out"
+        },
+        "subtitle": {
+          "preset": "slideUp",
+          "delay": 0.4,
+          "duration": 0.8,
+          "easing": "power2.out"
+        }
+      },
+      "duration": 5000
     }
   ]
 }

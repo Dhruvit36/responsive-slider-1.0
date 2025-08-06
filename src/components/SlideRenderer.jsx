@@ -1,6 +1,8 @@
 import { useRef, useEffect, useState } from 'react';
 import LayerAnimations from './LayerAnimations';
 import VideoBackground from './VideoBackground';
+import ContentLayer from './ContentLayer';
+import MultiLayerAnimations from './MultiLayerAnimations';
 
 const SlideRenderer = ({ 
   slide, 
@@ -12,10 +14,23 @@ const SlideRenderer = ({
   const slideRef = useRef(null);
   const [hasNotifiedReady, setHasNotifiedReady] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
+  const [layerElements, setLayerElements] = useState(new Map());
 
   // Check if this is a video slide
   const isVideoSlide = slide.video || slide.videoSrc;
   const shouldWaitForVideo = isVideoSlide && !videoReady;
+
+  // Check if this is a multi-layer slide
+  const isMultiLayerSlide = Array.isArray(slide.layers) && slide.layers.length > 0;
+
+  // Handle layer element registration
+  const handleLayerElementReady = (element, layerIndex) => {
+    setLayerElements(prev => {
+      const newMap = new Map(prev);
+      newMap.set(layerIndex, element);
+      return newMap;
+    });
+  };
 
   // Notify parent when slide is ready (only once)
   useEffect(() => {
@@ -90,15 +105,39 @@ const SlideRenderer = ({
         </div>
       </div>
 
-      {/* Layer Animations */}
-      <LayerAnimations
-        key={`${index}-${isActive ? 'active' : 'inactive'}`}
-        slideElement={slideRef.current}
-        slideIndex={index}
-        slideData={slide}
-        isActive={isActive}
-        onAnimationComplete={onAnimationComplete}
-      />
+      {/* Multi-Layer Content */}
+      {isMultiLayerSlide && slide.layers.map((layer, layerIndex) => (
+        <ContentLayer
+          key={`layer-${layerIndex}`}
+          layer={layer}
+          layerIndex={layerIndex}
+          slideIndex={index}
+          onElementReady={handleLayerElementReady}
+        />
+      ))}
+
+      {/* Animations - Choose system based on slide type */}
+      {isMultiLayerSlide ? (
+        <MultiLayerAnimations
+          key={`${index}-${isActive ? 'active' : 'inactive'}`}
+          slideElement={slideRef.current}
+          slideIndex={index}
+          slideData={slide}
+          layers={slide.layers}
+          layerElements={layerElements}
+          isActive={isActive}
+          onAnimationComplete={onAnimationComplete}
+        />
+      ) : (
+        <LayerAnimations
+          key={`${index}-${isActive ? 'active' : 'inactive'}`}
+          slideElement={slideRef.current}
+          slideIndex={index}
+          slideData={slide}
+          isActive={isActive}
+          onAnimationComplete={onAnimationComplete}
+        />
+      )}
     </div>
   );
 };

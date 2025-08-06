@@ -104,6 +104,23 @@ export const ANIMATION_PRESETS = {
     }
   },
 
+  slideInRight: {
+    name: 'Slide In Right',
+    category: 'entrance',
+    animation: (element, options = {}) => {
+      return gsap.fromTo(element,
+        { x: 100, opacity: 0 },
+        {
+          x: 0,
+          opacity: 1,
+          duration: options.duration || 0.8,
+          delay: options.delay || 0,
+          ease: options.easing || 'power2.out'
+        }
+      );
+    }
+  },
+
   slideInLeft: {
     name: 'Slide In Left',
     category: 'entrance',
