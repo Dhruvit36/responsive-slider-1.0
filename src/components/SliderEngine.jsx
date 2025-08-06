@@ -2,10 +2,12 @@ import { useRef, useEffect, useState, useCallback } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay, EffectFade } from 'swiper/modules';
 import { useSliderContext } from '../context/SliderContext';
+import useKeyboardNavigation from '../hooks/useKeyboardNavigation';
 import SlideRenderer from './SlideRenderer';
 import NavigationControls from './NavigationControls';
 import SliderSettings from './SliderSettings';
 import AnimationBuilder from './AnimationBuilder';
+import KeyboardShortcuts, { useKeyboardHelp } from './KeyboardShortcuts';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -65,6 +67,67 @@ const SliderEngine = ({
   const handleAnimationComplete = useCallback(() => {
     // Animation completed - could add callback here if needed
   }, []);
+
+  // Keyboard navigation handlers
+  const handleNext = useCallback(() => {
+    if (swiperRef.current?.swiper) {
+      swiperRef.current.swiper.slideNext();
+    }
+  }, []);
+
+  const handlePrev = useCallback(() => {
+    if (swiperRef.current?.swiper) {
+      swiperRef.current.swiper.slidePrev();
+    }
+  }, []);
+
+  const handleToggleAutoplay = useCallback(() => {
+    if (swiperRef.current?.swiper) {
+      const swiper = swiperRef.current.swiper;
+      const isCurrentlyRunning = swiper.autoplay && swiper.autoplay.running;
+      
+      if (isCurrentlyRunning) {
+        swiper.autoplay.stop();
+        updateSettings({
+          ...settings,
+          autoplay: {
+            ...settings.autoplay,
+            enabled: false
+          }
+        });
+      } else if (swiper.autoplay) {
+        swiper.autoplay.start();
+        updateSettings({
+          ...settings,
+          autoplay: {
+            ...settings.autoplay,
+            enabled: true
+          }
+        });
+      }
+    }
+  }, [settings, updateSettings]);
+
+  const handleEscape = useCallback(() => {
+    // Close any open modals/settings
+    if (showSettings) {
+      setShowSettings(false);
+    } else if (showAnimationBuilder) {
+      setShowAnimationBuilder(false);
+    }
+  }, [showSettings, showAnimationBuilder]);
+
+  // Enable keyboard navigation
+  const keyboardNavigation = useKeyboardNavigation({
+    onNext: handleNext,
+    onPrev: handlePrev,
+    onToggleAutoplay: handleToggleAutoplay,
+    onEscape: handleEscape,
+    enabled: !showSettings && !showAnimationBuilder // Disable when modals are open
+  });
+
+  // Keyboard help visibility
+  const keyboardHelp = useKeyboardHelp({ autoHideDelay: 4000 });
 
   // Update swiper when settings change
   useEffect(() => {
@@ -164,6 +227,17 @@ const SliderEngine = ({
       {showSettingsButton && (
         <div className="absolute top-4 right-4 z-50 flex gap-2">
           <button
+            onClick={keyboardHelp.showHelp}
+            className="bg-blue-600 bg-opacity-90 text-white p-3 rounded-full hover:bg-blue-700 transition-all backdrop-blur-sm border border-white border-opacity-20"
+            aria-label="Show keyboard shortcuts"
+            title="Keyboard Shortcuts (⌨️)"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="2" y="6" width="20" height="12" rx="2" />
+              <path d="M6 10h.01M10 10h4M6 14h.01M14 14h.01M18 14h.01" />
+            </svg>
+          </button>
+          <button
             onClick={() => setShowAnimationBuilder(!showAnimationBuilder)}
             className="bg-purple-600 bg-opacity-90 text-white p-3 rounded-full hover:bg-purple-700 transition-all backdrop-blur-sm border border-white border-opacity-20"
             aria-label="Open animation builder"
@@ -198,6 +272,13 @@ const SliderEngine = ({
         onClose={() => setShowAnimationBuilder(false)}
         slideData={slides[currentSlide]}
         onSave={handleAnimationSave}
+      />
+
+      {/* Keyboard Shortcuts Help */}
+      <KeyboardShortcuts
+        shortcuts={keyboardNavigation.shortcuts}
+        isVisible={keyboardHelp.isVisible}
+        onDismiss={keyboardHelp.hideHelp}
       />
     </div>
   );
