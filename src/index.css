@@ -5,3 +5,25 @@
 body {
   @apply bg-black text-white;
 }
+
+/* Phase 3.2 Multi-Layer Content Enhancements */
+.content-layer {
+  pointer-events: none; /* Prevent interference with slider controls */
+}
+
+.content-layer.interactive {
+  pointer-events: auto; /* Enable for interactive layers */
+}
+
+.text-layer {
+  text-rendering: optimizeLegibility;
+}
+
+.image-layer img {
+  object-fit: cover;
+  image-rendering: -webkit-optimize-contrast;
+}
+
+.custom-layer {
+  /* Custom HTML layers can override pointer-events if needed */
+}

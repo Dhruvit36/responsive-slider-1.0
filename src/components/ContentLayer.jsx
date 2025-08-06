@@ -31,10 +31,28 @@ const ContentLayer = ({
       'middle-right': 'absolute top-1/2 right-0 transform -translate-y-1/2',
       'bottom-left': 'absolute bottom-0 left-0',
       'bottom-center': 'absolute bottom-0 left-1/2 transform -translate-x-1/2',
-      'bottom-right': 'absolute bottom-0 right-0'
+      'bottom-right': 'absolute bottom-0 right-0',
+      'custom': 'absolute' // For custom x,y positioning
     };
 
     return positions[position] || positions['center'];
+  };
+
+  // Get custom positioning styles
+  const getCustomStyles = () => {
+    const { position, x, y, width, height } = layer;
+    const baseStyles = position === 'custom' ? {
+      left: x !== undefined ? `${x}px` : undefined,
+      top: y !== undefined ? `${y}px` : undefined,
+      width: width ? `${width}px` : undefined,
+      height: height ? `${height}px` : undefined,
+    } : {};
+
+    // Merge layer styles with positioning styles
+    return {
+      ...baseStyles,
+      ...layer.style
+    };
   };
 
   // Render different layer types
@@ -107,10 +125,11 @@ const ContentLayer = ({
       style={{
         zIndex: layer.zIndex || layerIndex + 10,
         opacity: 0, // Start hidden for animations
-        ...layer.style
+        ...getCustomStyles()
       }}
       data-layer-type={layer.type}
       data-layer-index={layerIndex}
+      data-layer-position={layer.position}
     >
       {renderLayerContent()}
     </div>

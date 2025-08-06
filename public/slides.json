@@ -350,6 +350,105 @@
         }
       ],
       "duration": 7000
+    },
+    {
+      "title": "Phase 3.2 Complete",
+      "subtitle": "Advanced Multi-Layer Content System",
+      "image": "/images/Slide_1.jpg",
+      "overlay": {
+        "gradient": "linear-gradient(135deg, rgba(0,20,50,0.9), rgba(0,0,0,0.5))"
+      },
+      "layers": [
+        {
+          "type": "text",
+          "content": "🎯",
+          "position": "custom",
+          "x": 100,
+          "y": 100,
+          "style": {
+            "fontSize": "60px",
+            "filter": "drop-shadow(0 0 20px rgba(255,215,0,0.8))"
+          },
+          "animation": {
+            "preset": "rotateIn",
+            "delay": 0.3,
+            "duration": 1.2,
+            "easing": "back.out(1.7)"
+          }
+        },
+        {
+          "type": "custom",
+          "html": "<div style='background: rgba(255,255,255,0.1); backdrop-filter: blur(15px); border-radius: 20px; padding: 25px; border: 2px solid rgba(255,255,255,0.2); box-shadow: 0 10px 40px rgba(0,0,0,0.3);'><h4 style='margin: 0 0 15px 0; color: #4ECDC4; font-size: 20px; font-weight: 700;'>🚀 Features Achieved</h4><ul style='margin: 0; padding: 0; list-style: none; color: rgba(255,255,255,0.9); font-size: 16px; line-height: 1.6;'><li>✅ Multiple Layer Types</li><li>✅ Custom Positioning</li><li>✅ Advanced Animations</li><li>✅ Sequential Timing</li></ul></div>",
+          "position": "custom",
+          "x": 50,
+          "y": 300,
+          "style": {
+            "width": "350px"
+          },
+          "animation": {
+            "preset": "slideInLeft",
+            "delay": 0.8,
+            "duration": 1.0,
+            "easing": "power2.out"
+          }
+        },
+        {
+          "type": "image",
+          "src": "/images/Slide_3.jpg",
+          "alt": "Success showcase",
+          "position": "custom",
+          "x": 600,
+          "y": 150,
+          "style": {
+            "width": "200px",
+            "height": "150px",
+            "borderRadius": "20px",
+            "boxShadow": "0 15px 50px rgba(0,0,0,0.4)",
+            "border": "3px solid rgba(255,255,255,0.3)"
+          },
+          "animation": {
+            "preset": "zoomIn",
+            "delay": 1.2,
+            "duration": 0.8,
+            "easing": "back.out(1.4)"
+          }
+        },
+        {
+          "type": "text",
+          "content": "Complete!",
+          "position": "custom",
+          "x": 550,
+          "y": 350,
+          "style": {
+            "fontSize": "36px",
+            "fontWeight": "900",
+            "color": "#FF6B6B",
+            "textShadow": "0 0 20px rgba(255,107,107,0.6)",
+            "transform": "rotate(-15deg)"
+          },
+          "animation": {
+            "preset": "bounceIn",
+            "delay": 1.6,
+            "duration": 1.0,
+            "easing": "bounce.out"
+          }
+        }
+      ],
+      "animations": {
+        "title": {
+          "preset": "slideUp",
+          "delay": 0.2,
+          "duration": 0.8,
+          "easing": "power2.out"
+        },
+        "subtitle": {
+          "preset": "slideUp",
+          "delay": 0.4,
+          "duration": 0.8,
+          "easing": "power2.out"
+        }
+      },
+      "duration": 8000
     }
   ]
 }
