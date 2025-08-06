@@ -43,10 +43,25 @@ const ContentLayer = ({
       case 'text':
         return (
           <div className="text-layer">
+            {layer.title && (
+              <h1 className="layer-title text-4xl font-bold mb-4">
+                {layer.title}
+              </h1>
+            )}
+            {layer.subtitle && (
+              <h2 className="layer-subtitle text-xl mb-6">
+                {layer.subtitle}
+              </h2>
+            )}
             {layer.content && (
               <div className="layer-content">
                 {layer.content}
               </div>
+            )}
+            {layer.buttonText && (
+              <button className="layer-button bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold">
+                {layer.buttonText}
+              </button>
             )}
           </div>
         );
@@ -60,6 +75,11 @@ const ContentLayer = ({
               className="max-w-full h-auto"
               style={layer.imageStyles}
             />
+            {layer.caption && (
+              <p className="image-caption text-sm mt-2">
+                {layer.caption}
+              </p>
+            )}
           </div>
         );
 
