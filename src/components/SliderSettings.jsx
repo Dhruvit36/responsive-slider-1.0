@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSliderContext } from '../context/SliderContext';
+import AnimationPresetDemo from './AnimationPresetDemo';
 
 const SliderSettings = ({ 
   isOpen = false, 
@@ -8,6 +9,7 @@ const SliderSettings = ({
 }) => {
   const { settings, updateSettings } = useSliderContext();
   const [localSettings, setLocalSettings] = useState(settings);
+  const [showAnimationDemo, setShowAnimationDemo] = useState(false);
 
   // Sync local settings with context when it changes
   useEffect(() => {
@@ -149,6 +151,17 @@ const SliderSettings = ({
             </div>
           </div>
 
+          {/* Animation Demo Section */}
+          <div className="mb-6 pt-6 border-t border-gray-700">
+            <h3 className="text-lg font-semibold mb-3">Animation Presets</h3>
+            <button
+              onClick={() => setShowAnimationDemo(true)}
+              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white py-2 px-4 rounded-lg transition-all duration-200"
+            >
+              🎭 View Animation Demo
+            </button>
+          </div>
+
           <div className="flex gap-3 pt-4 border-t border-gray-700">
             <button
               onClick={handleResetSettings}
@@ -165,6 +178,12 @@ const SliderSettings = ({
           </div>
         </div>
       </div>
+      
+      {/* Animation Demo Modal */}
+      <AnimationPresetDemo 
+        isVisible={showAnimationDemo}
+        onClose={() => setShowAnimationDemo(false)}
+      />
     </>
   );
 };

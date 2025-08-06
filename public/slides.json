@@ -103,21 +103,21 @@
       },
       "animations": {
         "title": {
-          "preset": "rotateIn",
-          "delay": 0.1,
+          "preset": "typewriter",
+          "delay": 0.3,
+          "duration": 2.0,
+          "easing": "none"
+        },
+        "subtitle": {
+          "preset": "slideInSplit",
+          "delay": 2.5,
           "duration": 1.2,
           "easing": "power2.out"
         },
-        "subtitle": {
-          "preset": "slideIn",
-          "delay": 0.4,
-          "duration": 0.7,
-          "easing": "power2.out"
-        },
         "cta": {
-          "preset": "flipIn",
-          "delay": 0.8,
-          "duration": 0.9,
+          "preset": "zoomBlur",
+          "delay": 4.0,
+          "duration": 1.0,
           "easing": "power2.out"
         }
       },
