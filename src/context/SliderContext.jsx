@@ -1,15 +1,18 @@
 import { createContext, useContext, useState, useEffect, useMemo, useCallback } from 'react';
+import sliderPersistence, { createDebouncedSave } from '../utils/persistence';
 
 // Create context
 const SliderContext = createContext();
 
 // Provider component
 export const SliderProvider = ({ children }) => {
+  const persistedState = useMemo(() => sliderPersistence.loadState(), []);
+
   const [slides, setSlides] = useState([]);
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(persistedState?.currentSlide || 0);
   const [isLoading, setIsLoading] = useState(true);
   const [eventListeners, setEventListeners] = useState(new Map());
-  const [settings, setSettings] = useState({
+  const defaultSettings = {
     autoplay: {
       enabled: true,
       delay: 5000
@@ -23,7 +26,28 @@ export const SliderProvider = ({ children }) => {
     speed: 600,
     spaceBetween: 0,
     slidesPerView: 1
+  };
+  const [settings, setSettings] = useState({
+    ...defaultSettings,
+    ...(persistedState?.settings || {}),
+    autoplay: {
+      ...defaultSettings.autoplay,
+      ...(persistedState?.settings?.autoplay || {})
+    },
+    navigation: {
+      ...defaultSettings.navigation,
+      ...(persistedState?.settings?.navigation || {})
+    }
   });
+
+  const debouncedSave = useMemo(
+    () => createDebouncedSave(sliderPersistence.saveState),
+    []
+  );
+
+  useEffect(() => {
+    debouncedSave({ currentSlide, settings });
+  }, [currentSlide, settings, debouncedSave]);
 
   // Load slides from JSON
   useEffect(() => {
